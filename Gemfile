@@ -15,6 +15,9 @@ gem "bcrypt", "~> 3.1.7"
 # JWT for authentication tokens
 gem "jwt", "~> 2.8"
 
+# Prometheus metrics exporter
+gem "prometheus-client", "~> 4.2"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -41,6 +44,9 @@ gem "image_processing", "~> 1.2"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Language Server Protocol support for Ruby in editors
+  gem "ruby-lsp", require: false
 
   # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
   gem "bundler-audit", require: false

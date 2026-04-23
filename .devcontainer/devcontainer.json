@@ -9,7 +9,10 @@
       "extensions": [
         "Shopify.ruby-lsp",
         "rebornix.Ruby"
-      ]
+      ],
+      "settings": {
+        "workbench.colorTheme": "Dark+"
+      }
     }
   },
   "forwardPorts": [3000, 5432],
