@@ -95,18 +95,21 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: api_dashboard_production
-    username: api_dashboard
-    password: <%= ENV["API_DASHBOARD_DATABASE_PASSWORD"] %>
+    url: <%= ENV["DATABASE_URL"] if ENV["DATABASE_URL"].present? %>
+    database: <%= ENV.fetch("POSTGRES_DB", "api_dashboard_production") %>
+    username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+    password: <%= ENV.fetch("POSTGRES_PASSWORD", "postgres") %>
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
   cache:
     <<: *primary_production
-    database: api_dashboard_production_cache
+    database: <%= ENV.fetch("POSTGRES_CACHE_DB", "api_dashboard_production_cache") %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: api_dashboard_production_queue
+    database: <%= ENV.fetch("POSTGRES_QUEUE_DB", "api_dashboard_production_queue") %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: api_dashboard_production_cable
+    database: <%= ENV.fetch("POSTGRES_CABLE_DB", "api_dashboard_production_cable") %>
     migrations_paths: db/cable_migrate

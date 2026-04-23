@@ -1,6 +1,8 @@
 require_relative "boot"
 
 require "rails/all"
+require "prometheus/middleware/collector"
+require "prometheus/middleware/exporter"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,5 +31,9 @@ module ApiDashboard
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.active_record.schema_format = :sql
+
+    # Prometheus: collect HTTP metrics and expose /metrics endpoint
+    config.middleware.use Prometheus::Middleware::Collector
+    config.middleware.use Prometheus::Middleware::Exporter
   end
 end
