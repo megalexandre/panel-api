@@ -1,0 +1,19 @@
+{
+  "name": "Ruby Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "runServices": ["db"],
+  "workspaceFolder": "/workspaces",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "rebornix.Ruby"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 5432],
+  "postCreateCommand": "bash -lc 'cd /workspaces && if [ -f Gemfile ]; then bundle install; fi'",
+  "postStartCommand": "bash -lc 'cd /workspaces && if [ -f bin/rails ]; then for i in {1..20}; do bundle exec rails db:prepare && break || sleep 2; done; fi'",
+  "remoteUser": "vscode"
+}

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: "<%= SecureRandom.uuid %>"
+  email: one@example.com
+  password_digest: MyString
+  roles: []
+
+two:
+  id: "<%= SecureRandom.uuid %>"
+  email: two@example.com
+  password_digest: MyString
+  roles: []
