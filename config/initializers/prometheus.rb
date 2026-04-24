@@ -10,5 +10,8 @@ prometheus.counter(
   docstring: "Total number of unhandled exceptions raised by the app",
   labels: %i[controller action]
 )
+<<<<<<< HEAD
 
 # Metrics are exposed on /metrics by Prometheus::Middleware::Exporter.
+=======
+>>>>>>> origin/main

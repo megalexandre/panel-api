@@ -8,8 +8,12 @@ bin/rails s -b 0.0.0.0 -p 3000
 Build image:
 
 ```bash
+<<<<<<< HEAD
 docker build -t alexandreqrz/api-panel:latest .
 docker push alexandreqrz/api-panel:latest
+=======
+docker build -t alexandreqrz/api-panel:tagname .
+>>>>>>> origin/main
 ```
 
 Run with PostgreSQL env vars:
@@ -32,4 +36,14 @@ docker run --rm -p 3000:80 \
 	-e RAILS_MASTER_KEY=your_master_key \
 	-e DATABASE_URL=postgres://postgres:postgres@host.docker.internal:5432/api_dashboard_production \
 	alexandreqrz/api-panel:tagname
+<<<<<<< HEAD
+=======
+```
+
+Push to Docker Hub:
+
+```bash
+docker login
+docker push alexandreqrz/api-panel:tagname
+>>>>>>> origin/main
 ```
