@@ -3,6 +3,7 @@ require_relative "boot"
 require "rails/all"
 require "prometheus/middleware/collector"
 require "prometheus/middleware/exporter"
+require_relative "../lib/app_metrics_middleware"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -34,7 +35,7 @@ module ApiDashboard
 
     # Prometheus: collect HTTP metrics and expose /metrics and /api/metrics endpoints
     config.middleware.use Prometheus::Middleware::Collector
-    config.middleware.use AppMetricsMiddleware
+    config.middleware.use ::AppMetricsMiddleware
     config.middleware.use Prometheus::Middleware::Exporter, path: "/metrics"
     config.middleware.use Prometheus::Middleware::Exporter, path: "/api/metrics"
   end
