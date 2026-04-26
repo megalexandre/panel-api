@@ -22,6 +22,7 @@ RUN apt-get update \
         libssl-dev \
         libyaml-dev \
         pkg-config \
+        postgresql-client \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 

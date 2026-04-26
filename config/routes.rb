@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     post "auth/login"
     post "auth/refresh"
+    resources :receivables, only: [:index, :show, :create, :update, :destroy]
     resources :users, only: [:create] do
       collection do
         get :me

@@ -16,7 +16,7 @@ class JwtService
       decoded = JWT.decode(token, SECRET_KEY, true, { algorithm: 'HS256' })
       decoded[0].with_indifferent_access
     rescue JWT::DecodeError, JWT::ExpiredSignature => e
-      { error: e.message }
+      { error: e.message }.with_indifferent_access
     end
 
     def encode_refresh(payload)
@@ -25,13 +25,15 @@ class JwtService
 
     def decode_refresh(token)
       payload = decode(token)
-      return { 'error' => 'Invalid token type' } if payload['token_type'] != 'refresh'
+      return payload if payload[:error].present?
+      return { error: 'Invalid token type' }.with_indifferent_access if payload[:token_type] != 'refresh'
+
       payload
     end
 
     def valid?(token)
       decoded = decode(token)
-      decoded['error'].nil?
+      decoded[:error].nil?
     end
   end
 end

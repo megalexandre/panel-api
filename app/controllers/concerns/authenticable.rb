@@ -17,11 +17,11 @@ module Authenticable
 
     payload = JwtService.decode(token)
 
-    if payload['error']
-      return render json: { error: payload['error'] }, status: :unauthorized
+    if payload[:error].present?
+      return render json: { error: 'Invalid or expired authorization token' }, status: :unauthorized
     end
 
-    @current_user = User.find_by(id: payload['user_id'])
+    @current_user = User.find_by(id: payload[:user_id])
 
     unless @current_user
       return render json: { error: 'User not found' }, status: :unauthorized
