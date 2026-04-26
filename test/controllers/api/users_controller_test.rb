@@ -3,7 +3,7 @@ require "test_helper"
 class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should create user with valid params" do
     assert_difference("User.count", 1) do
-      post api_users_url, params: {
+      post users_url, params: {
         email: "new-user@example.com",
         password: "password123",
         password_confirmation: "password123"
@@ -27,7 +27,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     )
 
     assert_no_difference("User.count") do
-      post api_users_url, params: {
+      post users_url, params: {
         email: "existing@example.com",
         password: "password123",
         password_confirmation: "password123"
@@ -54,7 +54,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
       roles: user.roles
     )
 
-    get me_api_users_url, headers: { "Authorization" => "Bearer #{token}" }
+    get me_users_url, headers: { "Authorization" => "Bearer #{token}" }
 
     assert_response :success
 
@@ -65,7 +65,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should return unauthorized when token is missing" do
-    get me_api_users_url
+    get me_users_url
 
     assert_response :unauthorized
 

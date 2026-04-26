@@ -11,7 +11,7 @@ class Api::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should login with valid credentials" do
-    post api_auth_login_url, params: {
+    post auth_login_url, params: {
       email: @user.email,
       password: "password123"
     }
@@ -25,7 +25,7 @@ class Api::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should return unauthorized with invalid credentials" do
-    post api_auth_login_url, params: {
+    post auth_login_url, params: {
       email: @user.email,
       password: "wrong-password"
     }
@@ -43,7 +43,7 @@ class Api::AuthControllerTest < ActionDispatch::IntegrationTest
       roles: @user.roles
     )
 
-    post api_auth_refresh_url, params: { refresh_token: refresh_token }
+    post auth_refresh_url, params: { refresh_token: refresh_token }
 
     assert_response :success
 
@@ -60,14 +60,14 @@ class Api::AuthControllerTest < ActionDispatch::IntegrationTest
       roles: @user.roles
     )
 
-    post api_auth_refresh_url, params: { refresh_token: access_token }
+    post auth_refresh_url, params: { refresh_token: access_token }
 
     assert_response :unauthorized
     assert_equal "Invalid token type", response.parsed_body["error"]
   end
 
   test "should reject refresh when token is missing" do
-    post api_auth_refresh_url
+    post auth_refresh_url
 
     assert_response :unauthorized
     assert_equal "Missing refresh token", response.parsed_body["error"]

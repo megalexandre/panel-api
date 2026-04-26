@@ -33,6 +33,10 @@ module ApiDashboard
     config.api_only = true
     config.active_record.schema_format = :sql
 
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+
     # Prometheus: collect HTTP metrics and expose /metrics and /api/metrics endpoints
     config.middleware.use Prometheus::Middleware::Collector
     config.middleware.use ::AppMetricsMiddleware
