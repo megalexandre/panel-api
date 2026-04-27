@@ -82,6 +82,34 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
     body = response.parsed_body
 
     assert_equal 2, body["receivables"].size
+    assert_equal 1, body.dig("pagination", "current_page")
+    assert_equal 20, body.dig("pagination", "per_page")
+    assert_equal 1, body.dig("pagination", "total_pages")
+    assert_equal 2, body.dig("pagination", "total_count")
+  end
+
+  test "should paginate receivables with page and per_page" do
+    user = create_user(email: "receivables-pagination@example.com")
+    receivable_1 = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting")
+    receivable_2 = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "in_analysis")
+    receivable_3 = Receivable.create!(amount_cents: 3000, due_date: Date.new(2026, 7, 1), status: "paid")
+
+    get receivables_url,
+        params: { page: 2, per_page: 2 },
+        headers: auth_headers_for(user)
+
+    assert_response :ok
+
+    body = response.parsed_body
+    returned_ids = body.fetch("receivables").map { |item| item.fetch("id") }
+
+    assert_equal [receivable_1.id], returned_ids
+    assert_not_includes returned_ids, receivable_2.id
+    assert_not_includes returned_ids, receivable_3.id
+    assert_equal 2, body.dig("pagination", "current_page")
+    assert_equal 2, body.dig("pagination", "per_page")
+    assert_equal 2, body.dig("pagination", "total_pages")
+    assert_equal 3, body.dig("pagination", "total_count")
   end
 
   test "should return unauthorized when token is missing" do

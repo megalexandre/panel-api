@@ -4,9 +4,16 @@ class Api::ReceivablesController < Api::BaseController
   before_action :load_receivable, only: [:show, :update, :destroy]
 
   def index
-    receivables = Receivables::ListService.call(with_discarded: with_discarded_param?)
+    result = Receivables::ListService.call(
+      with_discarded: with_discarded_param?,
+      page: page_param,
+      per_page: per_page_param
+    )
 
-    render json: { receivables: receivables.map { |receivable| ReceivableSerializer.new(receivable) } }, status: :ok
+    render json: {
+      receivables: result[:receivables].map { |receivable| ReceivableSerializer.new(receivable) },
+      pagination: result[:pagination]
+    }, status: :ok
   end
 
   def show
@@ -52,5 +59,13 @@ class Api::ReceivablesController < Api::BaseController
 
   def with_discarded_param?
     ActiveModel::Type::Boolean.new.cast(params[:with_discarded])
+  end
+
+  def page_param
+    params[:page]
+  end
+
+  def per_page_param
+    params[:per_page]
   end
 end

@@ -1,3 +1,1 @@
-module Api
-  class ResourceNotFoundError < StandardError; end
-end
+class ResourceNotFoundError < StandardError; end
