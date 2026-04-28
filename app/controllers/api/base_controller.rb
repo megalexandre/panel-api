@@ -12,13 +12,12 @@ module Api
       render json: { error: "Resource not found" }, status: :not_found
     end
 
-    def render_resource(resource, serializer_class, status: :ok, message: nil, key: :data)
-      serializer = serializer_class.new(resource)
-      payload = {}
-      payload[key] = serializer
-      payload[:message] = message if message.present?
-
-      render json: payload, status: status
+    def render_result(result, resource, serializer_class, status: :ok)
+      if result.success?
+        render json: serializer_class.new(resource), status: status
+      else
+        render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
+      end
     end
   end
 end

@@ -8,7 +8,13 @@
     "vscode": {
       "extensions": [
         "Shopify.ruby-lsp",
-        "rebornix.Ruby"
+        "rebornix.Ruby",
+        "anthropic.claude-code",
+        "CucumberOpen.cucumber-official",
+        "castwide.solargraph",
+        "kaiwood.endwise",
+        "hoovercj.ruby-linter",
+        "misogi.ruby-rubocop"
       ],
       "settings": {
         "workbench.colorTheme": "Dark+"

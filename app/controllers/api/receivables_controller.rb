@@ -1,7 +1,8 @@
 class Api::ReceivablesController < Api::BaseController
   include Authenticable
 
-  before_action :load_receivable, only: [:show, :update, :destroy]
+  before_action :load_receivable, only: [ :show, :update, :destroy ]
+
 
   def index
     result = Receivables::ListService.call(
@@ -17,28 +18,17 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def show
-    render_resource(@receivable, ReceivableSerializer, key: :receivable)
+    render json: ReceivableSerializer.new(@receivable), status: :ok
   end
 
   def create
     result = Receivables::CreateService.call(params: receivable_params)
-    receivable = result.receivable
-
-    if result.success?
-      render_resource(receivable, ReceivableSerializer, status: :created, key: :receivable)
-    else
-      render json: { errors: receivable.errors.full_messages }, status: :unprocessable_entity
-    end
+    render_result(result, result.receivable, ReceivableSerializer, status: :created)
   end
 
   def update
     result = Receivables::UpdateService.call(receivable: @receivable, params: receivable_params)
-
-    if result.success?
-      render_resource(@receivable, ReceivableSerializer, key: :receivable)
-    else
-      render json: { errors: @receivable.errors.full_messages }, status: :unprocessable_entity
-    end
+    render_result(result, @receivable, ReceivableSerializer)
   end
 
   def destroy

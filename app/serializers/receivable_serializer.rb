@@ -7,7 +7,6 @@ class ReceivableSerializer
     {
       id: @receivable.id,
       amount_cents: @receivable.amount_cents,
-      amount: format("%.2f", @receivable.amount_cents.to_i / 100.0),
       due_date: @receivable.due_date,
       status: @receivable.status,
       created_at: @receivable.created_at,
