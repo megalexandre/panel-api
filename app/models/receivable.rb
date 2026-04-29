@@ -10,6 +10,7 @@ class Receivable < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
             
   validates :due_date, presence: true
+  validates :change_date, presence: true
 
   def awaiting_days
     return 0 unless due_date

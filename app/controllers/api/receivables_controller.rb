@@ -3,7 +3,6 @@ class Api::ReceivablesController < Api::BaseController
 
   before_action :load_receivable, only: [ :show, :update, :destroy ]
 
-
   def index
     result = Receivables::ListService.call(
       with_discarded: with_discarded_param?,
@@ -22,7 +21,10 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def create
-    result = Receivables::CreateService.call(params: receivable_params)
+    form = Receivables::CreateForm.from_params(params)
+    return render json: { errors: form.errors.full_messages }, status: :unprocessable_entity unless form.valid?
+
+    result = Receivables::CreateService.call(params: form.to_attributes)
     render_result(result, result.receivable, ReceivableSerializer, status: :created)
   end
 
