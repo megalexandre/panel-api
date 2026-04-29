@@ -21,11 +21,8 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def create
-    form = Receivables::CreateForm.from_params(params)
-    return render json: { errors: form.errors.full_messages }, status: :unprocessable_entity unless form.valid?
-
-    result = Receivables::CreateService.call(params: form.to_attributes)
-    render_result(result, result.receivable, ReceivableSerializer, status: :created)
+    receivable = Receivables::CreateService.call(params: create_params.to_h)
+    render json: ReceivableSerializer.new(receivable), status: :created
   end
 
   def update
@@ -45,8 +42,8 @@ class Api::ReceivablesController < Api::BaseController
     raise Api::ResourceNotFoundError if @receivable.blank?
   end
 
-  def receivable_params
-    params.permit(:amount_cents, :change_date, :due_date, :status)
+  def create_params
+    params.require(:receivable).permit(Receivables::CreateForm::PERMITTED_ATTRIBUTES)
   end
 
   def with_discarded_param?

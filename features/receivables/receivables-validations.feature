@@ -18,13 +18,14 @@ Feature: Receivables management
     Then the response status should be 422
     And the response body should contain:
       """
-       {
-        "errors": [
-          "Amount cents can't be blank"
-        ]
+      {
+        "errors": {
+          "amount_cents": [
+            "can't be blank"
+          ]
+        }
       }
       """
-
 
   Scenario: Create a receivable without due_date
 
@@ -80,8 +81,10 @@ Feature: Receivables management
     And the response body should contain:
       """
       {
-        "errors": [
-          "Status is not included in the list"
-        ]
+        "errors": {
+          "status": [
+            "is not included in the list"
+          ]
+        }
       }
       """

@@ -4,7 +4,8 @@ module Receivables
   class CreateForm
     include ActiveModel::Model
 
-    attr_accessor :amount_cents, :due_date, :status, :change_date
+    PERMITTED_ATTRIBUTES = %i[amount_cents due_date status change_date].freeze
+    attr_accessor(*PERMITTED_ATTRIBUTES)
 
     validates :amount_cents, presence: true
     validates :due_date, presence: true

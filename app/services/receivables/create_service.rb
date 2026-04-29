@@ -1,13 +1,9 @@
 module Receivables
   class CreateService
-    Result = Struct.new(:receivable, :success?, keyword_init: true)
-
     def self.call(params:)
-      receivable = Receivable.new(params)
-      success = receivable.save
-
-      Result.new(receivable: receivable, success?: success)
+      form = Receivables::CreateForm.new(params)
+      raise Api::ValidationError.new(form.errors.messages) unless form.valid?
+      Receivable.create!(form.to_attributes)
     end
-
   end
 end
