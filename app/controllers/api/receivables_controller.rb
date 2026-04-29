@@ -44,7 +44,7 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def receivable_params
-    params.permit(:amount_cents, :amount, :due_date, :status)
+    params.permit(:amount_cents, :change_date, :due_date, :status)
   end
 
   def with_discarded_param?

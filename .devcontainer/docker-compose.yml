@@ -5,6 +5,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ..:/workspaces:cached
+      - claude-auth:/home/vscode/.claude
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
@@ -29,3 +30,4 @@ services:
 
 volumes:
   postgres-data:
+  claude-auth:

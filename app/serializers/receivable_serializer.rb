@@ -8,6 +8,8 @@ class ReceivableSerializer
       id: @receivable.id,
       amount_cents: @receivable.amount_cents,
       due_date: @receivable.due_date,
+      change_date: @receivable.change_date,
+      awaiting_days: @receivable.awaiting_days,
       status: @receivable.status,
       created_at: @receivable.created_at,
       deleted_at: @receivable.deleted_at,

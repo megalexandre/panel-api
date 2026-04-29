@@ -3,7 +3,7 @@ Given("I am authenticated as a user") do
     email: "cucumber-user@example.com",
     password: "password123",
     password_confirmation: "password123",
-    roles: ["user"]
+    roles: [ "user" ]
   )
   @headers = auth_headers_for(@current_user)
 end

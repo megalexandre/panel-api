@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Cucumber - arquivo atual",
+      "request": "launch",
+      "script": "bin/cucumber ${file}",
+      "useBundler": true,
+      "askParameters": false
+    },
+    {
+      "type": "rdbg",
+      "name": "Cucumber - todos",
+      "request": "launch",
+      "script": "bin/cucumber features/",
+      "useBundler": true,
+      "askParameters": false
+    },
+    {
+      "type": "rdbg",
+      "name": "Rails server",
+      "request": "launch",
+      "script": "bin/rails server",
+      "useBundler": true,
+      "askParameters": false
+    }
+  ]
+}
