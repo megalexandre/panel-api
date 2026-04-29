@@ -7,7 +7,9 @@ class Api::ReceivablesController < Api::BaseController
     result = Receivables::ListService.call(
       with_discarded: with_discarded_param?,
       page: page_param,
-      per_page: per_page_param
+      per_page: per_page_param,
+      sort_by: sort_by_param,
+      sort_direction: sort_direction_param
     )
 
     render json: {
@@ -56,5 +58,13 @@ class Api::ReceivablesController < Api::BaseController
 
   def per_page_param
     params[:per_page]
+  end
+
+  def sort_by_param
+    params[:sort_by]
+  end
+
+  def sort_direction_param
+    params[:sort_direction]
   end
 end

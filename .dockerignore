@@ -40,6 +40,14 @@
 # Ignore development files
 /.devcontainer
 
+# Ignore test files
+/test/
+/spec/
+/features/
+
+# Ignore local bundle (gems are installed during build)
+/vendor/bundle
+
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
