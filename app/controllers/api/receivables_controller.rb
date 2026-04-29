@@ -43,7 +43,7 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def create_params
-    params.require(:receivable).permit(Receivables::CreateForm::PERMITTED_ATTRIBUTES)
+    params.permit(Receivables::CreateForm::PERMITTED_ATTRIBUTES)
   end
 
   def with_discarded_param?
