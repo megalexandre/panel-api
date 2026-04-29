@@ -1,7 +1,9 @@
 Given("the following receivables exist:") do |table|
   table.hashes.each do |row|
     create_receivable(
+      id: row["id"].presence,
       amount_cents: row["amount_cents"],
+      change_date: row["change_date"].presence,
       due_date: row["due_date"],
       status: row.fetch("status", "awaiting")
     )
