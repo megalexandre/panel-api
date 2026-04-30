@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ReceivableSerializer
   def initialize(receivable)
     @receivable = receivable

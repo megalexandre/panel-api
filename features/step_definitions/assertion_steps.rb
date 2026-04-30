@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
 DATE_REGEX = /\A\d{4}-\d{2}-\d{2}(T[\d:.]+Z?)?\z/
 

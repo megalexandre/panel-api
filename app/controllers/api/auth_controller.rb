@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Api::AuthController < Api::BaseController
   def login
     service = AuthService.new(email: params[:email], password: params[:password])

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ReceivableFactory
   def create_receivable(amount_cents:, due_date:, status: "awaiting", change_date: nil, id: nil, user: nil)
     Receivable.create!(

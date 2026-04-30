@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given("the time is frozen at {string}") do |time|
   Timecop.freeze(Time.parse(time))
 end

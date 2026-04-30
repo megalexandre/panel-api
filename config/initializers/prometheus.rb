@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "prometheus/client"
 
 # Use a thread-safe registry backed by in-process memory

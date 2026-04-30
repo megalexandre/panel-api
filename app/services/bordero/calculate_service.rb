@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Bordero
   class CalculateService
     def self.call(params:)

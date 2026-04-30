@@ -1,5 +1,8 @@
+# frozen_string_literal: true
 class ReceivabelAddUserId < ActiveRecord::Migration[8.1]
   def change
-    add_reference :receivables, :user, type: :uuid, null: false, foreign_key: true
+    unless column_exists?(:receivables, :user_id)
+      add_reference :receivables, :user, type: :uuid, null: true, foreign_key: true
+    end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class JwtService
   SECRET_KEY = Rails.application.credentials.dig(:jwt_secret) || 'your-secret-key-change-in-production'
   ACCESS_EXPIRATION  = ENV.fetch('JWT_ACCESS_EXP_HOURS',  '1').to_i.hours

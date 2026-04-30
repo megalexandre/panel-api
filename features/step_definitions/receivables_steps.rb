@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given("the following receivables exist:") do |table|
   table.hashes.each do |row|
     create_receivable(

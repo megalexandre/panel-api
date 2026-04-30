@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Receivables
   class FindService
     def self.call(id:, user_id:, with_discarded: false)

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 When("I send a {word} to {string} with body:") do |method, path, body|
   send(method.downcase, "#{path}", body, @headers)
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Receivables
   class UpdateService
     Result = Struct.new(:receivable, :success?, keyword_init: true)

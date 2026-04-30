@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Receivables
   class CreateService
     def self.call(params:, user_id:)

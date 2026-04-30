@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given("I am authenticated as a user") do
   @current_user = User.create!(
     email: "cucumber-user@example.com",

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AppMetricsMiddleware
   STATUS_PATH = "/proc/self/status".freeze
 

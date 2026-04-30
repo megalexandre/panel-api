@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ConvertReceivablesIdToUuid < ActiveRecord::Migration[8.1]
   def up
     add_column :receivables, :uuid, :uuid, default: "gen_random_uuid()", null: false

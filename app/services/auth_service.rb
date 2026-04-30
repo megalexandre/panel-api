@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AuthService
   attr_reader :email, :password, :errors
 

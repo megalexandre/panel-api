@@ -2,7 +2,25 @@
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 # Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  NewCops: enable # Ativa novas regras automaticamente em atualizações do RuboCop
+  Exclude:
+    - 'db/schema.rb' # O schema é gerado automaticamente, melhor não mexer
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+  # Garante que todos os seus arquivos (incluindo migrations) 
+  # tenham o comentário de string congelada
+
+Rails/CreateTableWithTimestamps:
+  Enabled: true
+  # Boa prática para garantir que você não esqueça t.timestamps em novas tabelas
+
+# Regras customizadas para Migrations (opcional, mas recomendado)
+# Se você quiser que o RuboCop não reclame de nomes de classes de migration
+# como "ReceivabelAddUserId" (que tem um typo, mas já foi gerada)
+
+# Naming/MethodName:
+#  Exclude:
+#    - 'db/migrate/*'

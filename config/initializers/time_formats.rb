@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 [ Time, ActiveSupport::TimeWithZone, DateTime ].each do |klass|
   klass.class_eval do
     def as_json(*)

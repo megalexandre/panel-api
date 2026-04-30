@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Receivables
   class ListService
     DEFAULT_PAGE = 1

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Receivables
   class AmountParser
     def self.to_cents(value)
