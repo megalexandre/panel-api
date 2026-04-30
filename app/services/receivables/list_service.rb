@@ -13,8 +13,9 @@ module Receivables
     }.freeze
     SORT_DIRECTIONS = %w[asc desc].freeze
 
-    def self.call(with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION)
+    def self.call(user_id:, with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION)
       relation = with_discarded ? Receivable.with_discarded : Receivable.active
+      relation = relation.where(user_id: user_id)
       page_number = normalize_page(page)
       per_page_number = normalize_per_page(per_page)
       column = normalize_sort_by(sort_by)

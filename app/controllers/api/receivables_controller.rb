@@ -5,6 +5,7 @@ class Api::ReceivablesController < Api::BaseController
 
   def index
     result = Receivables::ListService.call(
+      user_id: current_user_id,
       with_discarded: with_discarded_param?,
       page: page_param,
       per_page: per_page_param,
@@ -40,7 +41,7 @@ class Api::ReceivablesController < Api::BaseController
   private
 
   def load_receivable
-    @receivable = Receivables::FindService.call(id: params[:id], with_discarded: with_discarded_param?)
+    @receivable = Receivables::FindService.call(id: params[:id], user_id: current_user_id, with_discarded: with_discarded_param?)
     raise Api::ResourceNotFoundError if @receivable.blank?
   end
 

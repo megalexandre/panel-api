@@ -73,8 +73,8 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
 
   test "should list receivables" do
     user = create_user(email: "receivables-list@example.com")
-    Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting")
-    Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "in_analysis")
+    Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting", user: user)
+    Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "in_analysis", user: user)
 
     get receivables_url, headers: auth_headers_for(user)
 
@@ -88,11 +88,26 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, body.dig("pagination", "total_count")
   end
 
+  test "should not list another user receivables" do
+    user_a = create_user(email: "receivables-user-a@example.com")
+    user_b = create_user(email: "receivables-user-b@example.com")
+    Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting", user: user_a)
+    receivable_b = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "awaiting", user: user_b)
+
+    get receivables_url, headers: auth_headers_for(user_a)
+
+    assert_response :ok
+    ids = response.parsed_body.fetch("receivables").map { |item| item.fetch("id") }
+
+    assert_not_includes ids, receivable_b.id
+    assert_equal 1, response.parsed_body.dig("pagination", "total_count")
+  end
+
   test "should paginate receivables with page and per_page" do
     user = create_user(email: "receivables-pagination@example.com")
-    receivable_1 = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting")
-    receivable_2 = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "in_analysis")
-    receivable_3 = Receivable.create!(amount_cents: 3000, due_date: Date.new(2026, 7, 1), status: "paid")
+    receivable_1 = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting", user: user)
+    receivable_2 = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "in_analysis", user: user)
+    receivable_3 = Receivable.create!(amount_cents: 3000, due_date: Date.new(2026, 7, 1), status: "paid", user: user)
 
     get receivables_url,
         params: { page: 2, per_page: 2 },
@@ -123,7 +138,7 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
 
   test "should soft delete receivable" do
     user = create_user(email: "receivables-delete@example.com")
-    receivable = Receivable.create!(amount_cents: 1500, due_date: Date.new(2026, 7, 1), status: "awaiting")
+    receivable = Receivable.create!(amount_cents: 1500, due_date: Date.new(2026, 7, 1), status: "awaiting", user: user)
 
     delete receivable_url(receivable), headers: auth_headers_for(user)
 
@@ -133,8 +148,8 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not list soft deleted receivables" do
     user = create_user(email: "receivables-soft-list@example.com")
-    active_receivable = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting")
-    deleted_receivable = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "paid", deleted_at: Time.current)
+    active_receivable = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting", user: user)
+    deleted_receivable = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "paid", deleted_at: Time.current, user: user)
 
     get receivables_url, headers: auth_headers_for(user)
 
@@ -147,8 +162,8 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
 
   test "should list soft deleted receivables with with_discarded" do
     user = create_user(email: "receivables-with-discarded@example.com")
-    active_receivable = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting")
-    deleted_receivable = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "overdue", deleted_at: Time.current)
+    active_receivable = Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, 1), status: "awaiting", user: user)
+    deleted_receivable = Receivable.create!(amount_cents: 2000, due_date: Date.new(2026, 6, 1), status: "overdue", deleted_at: Time.current, user: user)
 
     get receivables_url,
         params: { with_discarded: true },
@@ -163,7 +178,7 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
 
   test "should show soft deleted receivable with with_discarded" do
     user = create_user(email: "receivables-show-with-discarded@example.com")
-    receivable = Receivable.create!(amount_cents: 3000, due_date: Date.new(2026, 8, 1), status: "in_transaction", deleted_at: Time.current)
+    receivable = Receivable.create!(amount_cents: 3000, due_date: Date.new(2026, 8, 1), status: "in_transaction", deleted_at: Time.current, user: user)
 
     get receivable_url(receivable),
         params: { with_discarded: true },
