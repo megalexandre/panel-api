@@ -23,7 +23,7 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def create
-    receivable = Receivables::CreateService.call(params: create_params.to_h)
+    receivable = Receivables::CreateService.call(params: create_params.to_h, user_id: current_user_id)
     render json: ReceivableSerializer.new(receivable), status: :created
   end
 

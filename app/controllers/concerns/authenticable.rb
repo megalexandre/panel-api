@@ -4,6 +4,7 @@ module Authenticable
   included do
     before_action :authenticate_request!
     attr_reader :current_user
+    helper_method :current_user_id if respond_to?(:helper_method)
   end
 
   private
@@ -36,6 +37,10 @@ module Authenticable
     return nil unless parts.length == 2 && parts[0] == 'Bearer'
 
     parts[1]
+  end
+
+  def current_user_id
+    @current_user&.id
   end
 
   def authorize_role!(*roles)
