@@ -1,78 +1,65 @@
 # syntax=docker/dockerfile:1
-# check=error=true
-
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t api_dashboard .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name api_dashboard api_dashboard
-
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
-
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.4.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-# Rails app lives here
 WORKDIR /rails
 
-# Install base packages
+# Instalamos apenas o essencial para RODAR o app
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips wget gnupg && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/postgresql.gpg && \
-    apt-get update -qq && \
-    apt-get install --no-install-recommends -y postgresql-client-17 && \
-    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
+    apt-get install --no-install-recommends -y \
+    curl \
+    libjemalloc2 \
+    # libpq5 é a biblioteca runtime do postgres (essencial para a gem 'pg')
+    libpq5 \
+    # Cliente padrão do Debian (versão 15 geralmente, que funciona perfeitamente com o PG 17)
+    postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Set production environment variables and enable jemalloc for reduced memory usage and latency.
+# Configurações de ambiente
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test:tools" \
-    LD_PRELOAD="/usr/local/lib/libjemalloc.so"
+    LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
 
-# Throw-away build stage to reduce size of final image
+# --- Estágio de Build ---
 FROM base AS build
 
-# Install packages needed to build gems
+# Instalamos o que é necessário para COMPILAR as gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips libyaml-dev pkg-config && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    git \
+    libpq-dev \
+    libyaml-dev \
+    pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install application gems
-COPY vendor/* ./vendor/
 COPY Gemfile Gemfile.lock ./
-
 RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
-    bundle exec bootsnap precompile -j 1 --gemfile
+    # Remove cache de gems e arquivos de objeto (.o) que sobram da compilação
+    rm -rf "${BUNDLE_PATH}"/cache/*.gem && \
+    find "${BUNDLE_PATH}"/ruby/*/gems/ -name "*.o" -delete
 
-# Copy application code
 COPY . .
 
-# Precompile bootsnap code for faster boot times.
-# -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+# Precompila o bootsnap
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
-
-
-
-# Final stage for app image
+# --- Estágio Final ---
 FROM base
 
-# Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
-USER 1000:1000
 
-# Copy built artifacts: gems, application
+# Copia apenas o que importa
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /rails /rails
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# Limpeza final de pastas desnecessárias que podem ter vindo no 'COPY .'
+RUN rm -rf /rails/tmp/* /rails/log/* /rails/spec /rails/test /rails/.git
 
-# Start server via Thruster by default, this can be overwritten at runtime
+USER 1000:1000
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]

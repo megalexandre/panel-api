@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bundle install *)"
+      "Bash(bundle install *)",
+      "Bash(grep -ri \"bordero\\\\|borderô\\\\|bord\" /home/alex/Workspace/panel/api --include=\"*.rb\" --include=\"*.py\" --include=\"*.js\" --include=\"*.ts\" ! -path \"*/vendor/*\")"
     ]
   }
 }

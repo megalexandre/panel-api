@@ -8,8 +8,7 @@ Rails.application.routes.draw do
         get :me
       end
     end
-    get "exemplo/user"
-    get "exemplo/admin"
+    post "bordero/calculate", to: "bordero#calculate"
   end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
