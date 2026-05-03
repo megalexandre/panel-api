@@ -22,8 +22,12 @@ RUN apt-get update \
         libssl-dev \
         libyaml-dev \
         pkg-config \
-        postgresql-client \
         zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "deb http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-17 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL "https://cache.ruby-lang.org/pub/ruby/${RUBY_VERSION%.*}/ruby-${RUBY_VERSION}.tar.gz" -o /tmp/ruby.tar.gz \

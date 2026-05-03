@@ -22,11 +22,12 @@ default: &default
 
 development:
   <<: *default
-  database: api_dashboard_development
-  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD", "postgres") %>
-  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
-  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
+  database: postgres
+  username: postgres
+  password: 9qTtQYoQIa6IZSUqlI0vAHpR2RIykWU83RzzRCdB2BT0xwbYfOyClxNIQ20qaPTz
+  host: 85.31.230.47
+  port: 5532
+  
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
