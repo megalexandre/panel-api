@@ -49,6 +49,9 @@ gem "image_processing", "~> 1.2"
 
 gem 'activerecord-postgis-adapter'
 
+# Brazilian (and global) holiday calendar
+gem 'holidays', '~> 8.0'
+
 group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner-active_record"

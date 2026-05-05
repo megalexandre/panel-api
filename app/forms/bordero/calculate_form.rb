@@ -3,6 +3,8 @@ module Bordero
   class CalculateForm
     include ActiveModel::Model
 
+    PERMITTED_PARAMS = [:change_date, :monthly_rate_percent, { receivables: [:amount_cents, :due_date, :awaiting_days] }].freeze
+
     attr_accessor :change_date, :monthly_rate_percent, :receivables
 
     validates :change_date, presence: true
@@ -49,6 +51,7 @@ module Bordero
           if due_date <= effective_start
             errors.add("receivables[#{index}].due_date", "must be after change_date + awaiting_days")
           end
+          
         rescue ArgumentError
           errors.add("receivables[#{index}].due_date", "is not a valid date")
         end

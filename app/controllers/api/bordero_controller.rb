@@ -2,6 +2,8 @@
 class Api::BorderoController < Api::BaseController
   include Authenticable
 
+  before_action :validate_form, only: :calculate
+
   def calculate
     result = Bordero::CalculateService.call(params: calculate_params)
     render json: BorderoSerializer.new(result), status: :ok
@@ -9,8 +11,12 @@ class Api::BorderoController < Api::BaseController
 
   private
 
+  def validate_form
+    form = Bordero::CalculateForm.new(calculate_params)
+    raise Api::ValidationError.new(form.errors.messages) unless form.valid?
+  end
+
   def calculate_params
-    params.permit(:change_date, :monthly_rate_percent,
-                  receivables: [:amount_cents, :due_date, :awaiting_days]).to_h
+    params.permit(*Bordero::CalculateForm::PERMITTED_PARAMS).to_h
   end
 end
