@@ -8,8 +8,8 @@ bin/rails s -b 0.0.0.0 -p 3000
 Build image:
 
 ```bash
-docker build -t alexandreqrz/api-panel:lastest . &&
-docker push alexandreqrz/api-panel:lastest
+docker build -t alexandreqrz/api-panel:latest . &&
+docker push alexandreqrz/api-panel:latest
 ```
 
 Run with PostgreSQL env vars:
