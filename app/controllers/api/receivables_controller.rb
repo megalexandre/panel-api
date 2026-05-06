@@ -5,24 +5,15 @@ class Api::ReceivablesController < Api::BaseController
 
   before_action :load_receivable, only: [ :show, :update, :destroy ]
 
-  def sumarize
-    receivables = Receivable.active.where(user_id: current_user_id)
-    render json: ReceivableSumarizeSerializer.new(receivables), status: :ok
-  end
-
   def index
-    result = Receivables::ListService.call(
-      user_id: current_user_id,
-      with_discarded: with_discarded_param?,
-      page: page_param,
-      per_page: per_page_param,
-      sort_by: sort_by_param,
-      sort_direction: sort_direction_param
-    )
+    form = Receivables::ListForm.from_params(params, user_id: current_user_id)
+    result = Receivables::ListService.call(**form.to_service_params)
+    receivables = Receivable.where(user_id: current_user_id)
 
     render json: {
       receivables: result[:receivables].map { |receivable| ReceivableSerializer.new(receivable) },
-      pagination: result[:pagination]
+      pagination: result[:pagination],
+      summary: ReceivableSumarizeSerializer.new(result[:receivables])
     }, status: :ok
   end
 
@@ -48,31 +39,12 @@ class Api::ReceivablesController < Api::BaseController
   private
 
   def load_receivable
-    @receivable = Receivables::FindService.call(id: params[:id], user_id: current_user_id, with_discarded: with_discarded_param?)
+    with_discarded = ActiveModel::Type::Boolean.new.cast(params[:with_discarded])
+    @receivable = Receivables::FindService.call(id: params[:id], user_id: current_user_id, with_discarded: with_discarded)
     raise Api::ResourceNotFoundError if @receivable.blank?
   end
 
   def create_params
     params.permit(Receivables::CreateForm::PERMITTED_ATTRIBUTES)
-  end
-
-  def with_discarded_param?
-    ActiveModel::Type::Boolean.new.cast(params[:with_discarded])
-  end
-
-  def page_param
-    params[:page]
-  end
-
-  def per_page_param
-    params[:per_page]
-  end
-
-  def sort_by_param
-    params[:sort_by]
-  end
-
-  def sort_direction_param
-    params[:sort_direction]
   end
 end

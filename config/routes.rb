@@ -3,13 +3,8 @@ Rails.application.routes.draw do
   scope module: :api do
     post "auth/login"
     post "auth/refresh"
-
-    resources :receivables, only: [:index, :show, :create, :update, :destroy] do
-      collection do
-        get :sumarize
-      end
-    end
-
+      
+    resources :receivables, only: [:index, :show, :create, :update, :destroy]
     resources :users, only: [:create] do
       collection do
         get :me
@@ -17,13 +12,8 @@ Rails.application.routes.draw do
     end
     post "bordero/calculate", to: "bordero#calculate"
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-  # root "posts#index"
   
 end

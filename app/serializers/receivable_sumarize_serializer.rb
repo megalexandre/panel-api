@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+# @TODO remover essa query daqui
+
 class ReceivableSumarizeSerializer
   def initialize(receivables)
     @receivables = receivables

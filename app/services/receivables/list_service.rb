@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Receivables
   class ListService
     DEFAULT_PAGE = 1
@@ -15,7 +16,7 @@ module Receivables
     SORT_DIRECTIONS = %w[asc desc].freeze
 
     def self.call(user_id:, with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION)
-      relation = with_discarded ? Receivable.with_discarded : Receivable.active
+      relation = with_discarded ? Receivable.with_discarded : Receivable
       relation = relation.where(user_id: user_id)
       page_number = normalize_page(page)
       per_page_number = normalize_per_page(per_page)
@@ -45,7 +46,7 @@ module Receivables
     def self.normalize_per_page(per_page)
       number = per_page.to_i
       normalized = number.positive? ? number : DEFAULT_PER_PAGE
-      [normalized, MAX_PER_PAGE].min
+      [ normalized, MAX_PER_PAGE ].min
     end
 
     def self.normalize_sort_by(sort_by)
