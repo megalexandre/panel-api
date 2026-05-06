@@ -47,4 +47,8 @@ class Api::ReceivablesController < Api::BaseController
   def create_params
     params.permit(Receivables::CreateForm::PERMITTED_ATTRIBUTES)
   end
+
+  def receivable_params
+    params.permit(:amount_cents, :amount, :due_date, :status, :change_date, :notes)
+  end
 end

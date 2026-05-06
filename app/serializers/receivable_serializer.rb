@@ -12,6 +12,7 @@ class ReceivableSerializer
       change_date: @receivable.change_date,
       awaiting_days: @receivable.awaiting_days,
       status: @receivable.status,
+      notes: @receivable.notes,
       created_at: @receivable.created_at,
       deleted_at: @receivable.deleted_at,
       updated_at: @receivable.updated_at

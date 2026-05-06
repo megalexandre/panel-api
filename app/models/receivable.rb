@@ -1,21 +1,23 @@
 # frozen_string_literal: true
+
 class Receivable < ApplicationRecord
   belongs_to :user
 
   enum :status, { awaiting: 0, in_analysis: 1, in_transaction: 2, paid: 3, overdue: 4 }
 
   default_scope { where(deleted_at: nil) }
+  default_scope :unpaid, -> { where.not(status: :paid) }
 
   scope :discarded, -> { unscoped.where.not(deleted_at: nil) }
   scope :with_discarded, -> { unscoped }
 
-  scope :unpaid, -> { where.not(status: :paid) }
-
   validates :amount_cents, presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-            
+                                                                 
   validates :due_date, presence: true
   validates :change_date, presence: true
+  validates :status, presence: true
+  validates :user, presence: true
 
   def awaiting_days
     return 0 unless due_date

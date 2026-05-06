@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       end
     end
     post "bordero/calculate", to: "bordero#calculate"
+    get  "calendar",          to: "calendar#index"
   end
   
   get "up" => "rails/health#show", as: :rails_health_check
