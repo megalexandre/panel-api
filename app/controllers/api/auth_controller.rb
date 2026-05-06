@@ -2,7 +2,7 @@
 class Api::AuthController < Api::BaseController
   def login
     service = AuthService.new(email: params[:email], password: params[:password])
-    user    = service.authenticate
+    user = service.authenticate
 
     if user
       tokens = AuthService.issue_tokens(user)
@@ -13,7 +13,7 @@ class Api::AuthController < Api::BaseController
   end
 
   def refresh
-    return render json: { error: 'Missing refresh token' }, status: :unauthorized unless params[:refresh_token].present?
+    return render json: { error: "Missing refresh token" }, status: :unauthorized unless params[:refresh_token].present?
 
     result = AuthService.refresh(params[:refresh_token])
 

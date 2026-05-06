@@ -1,8 +1,14 @@
 # frozen_string_literal: true
+
 class Api::ReceivablesController < Api::BaseController
   include Authenticable
 
   before_action :load_receivable, only: [ :show, :update, :destroy ]
+
+  def sumarize
+    receivables = Receivable.active.where(user_id: current_user_id)
+    render json: ReceivableSumarizeSerializer.new(receivables), status: :ok
+  end
 
   def index
     result = Receivables::ListService.call(

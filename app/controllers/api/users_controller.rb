@@ -15,7 +15,7 @@ class Api::UsersController < Api::BaseController
   end
 
   def me
-    render json: { user: UserSerializer.new(current_user) }, status: :ok
+    render json: UserMeSerializer.new(user: current_user), status: :ok
   end
 
   private

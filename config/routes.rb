@@ -3,7 +3,13 @@ Rails.application.routes.draw do
   scope module: :api do
     post "auth/login"
     post "auth/refresh"
-    resources :receivables, only: [:index, :show, :create, :update, :destroy]
+
+    resources :receivables, only: [:index, :show, :create, :update, :destroy] do
+      collection do
+        get :sumarize
+      end
+    end
+
     resources :users, only: [:create] do
       collection do
         get :me
@@ -11,7 +17,6 @@ Rails.application.routes.draw do
     end
     post "bordero/calculate", to: "bordero#calculate"
   end
-  resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
