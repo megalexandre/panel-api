@@ -5,8 +5,7 @@ class Receivable < ApplicationRecord
 
   enum :status, { awaiting: 0, in_analysis: 1, in_transaction: 2, paid: 3, overdue: 4 }
 
-  default_scope { where(deleted_at: nil) }
-  default_scope :unpaid, -> { where.not(status: :paid) }
+  default_scope { where(deleted_at: nil).where.not(status: :paid) }
 
   scope :discarded, -> { unscoped.where.not(deleted_at: nil) }
   scope :with_discarded, -> { unscoped }
