@@ -54,7 +54,7 @@ gem "image_processing", "~> 1.2"
 gem "activerecord-postgis-adapter"
 
 # Brazilian (and global) holiday calendar
-gem "holidays", "~> 8.0"
+gem "holidays", "~> 9.2"
 
   # Swagger/OpenAPI documentation
   gem "rswag-api"
