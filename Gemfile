@@ -15,7 +15,7 @@ gem "puma", ">= 5.0"
 # gem "jbuilder"
 
 # Keep rake aligned with the environment version to avoid activation mismatch.
-gem "rake", "13.2.1"
+gem "rake", "13.4.2"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
