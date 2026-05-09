@@ -47,9 +47,8 @@ module Bordero
 
         begin
           due_date = Date.parse(item[:due_date].to_s)
-          effective_start = parsed_change_date + item[:awaiting_days].to_i
-          if due_date <= effective_start
-            errors.add("receivables[#{index}].due_date", "must be after change_date + awaiting_days")
+          if due_date <= parsed_change_date
+            errors.add("receivables[#{index}].due_date", "must be after change_date")
           end
           
         rescue ArgumentError

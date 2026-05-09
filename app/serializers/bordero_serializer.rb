@@ -17,6 +17,7 @@ class BorderoSerializer
   def serialize_item(item)
     {
       amount_cents:          item[:amount_cents],
+      deposit_date:          item[:deposit_date],
       due_date:              item[:due_date],
       total_days:            item[:total_days],
       interest_rate_percent: item[:interest_rate_percent],
