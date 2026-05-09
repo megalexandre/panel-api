@@ -4,7 +4,7 @@ Feature: Borderô
     Given the time is frozen at "2026-08-01 00:00:00"
     Given I am authenticated as a user
 
-  Scenario: Calculate with one receivable
+  Scenario: Calculate receivables
 
     When I send a POST to "/bordero/calculate" with body:
       """
@@ -23,8 +23,8 @@ Feature: Borderô
       """
       {
         "total_amount_cents": 300000,
-        "total_proceeds_cents": 291485,
-        "total_interest_amount_cents": 8515,
+        "total_proceeds_cents": 291500,
+        "total_interest_amount_cents": 8500,
         "average_days": 34.0,
         "items": [
           {
@@ -41,18 +41,18 @@ Feature: Borderô
             "deposit_date": "2026-09-02",
             "settlement_date": "2026-09-04",
             "total_days": 34,
-            "interest_rate_percent": 2.838,
-            "interest_amount_cents": 2838,
-            "proceeds_cents": 97162
+            "interest_rate_percent": 2.8333,
+            "interest_amount_cents": 2833,
+            "proceeds_cents": 97167
           },
           {
             "amount_cents": 100000,
             "deposit_date": "2026-09-03",
             "settlement_date": "2026-09-08",
             "total_days": 38,
-            "interest_rate_percent": 3.1772,
-            "interest_amount_cents": 3177,
-            "proceeds_cents": 96823
+            "interest_rate_percent": 3.1667,
+            "interest_amount_cents": 3167,
+            "proceeds_cents": 96833
           }
         ]
       }
