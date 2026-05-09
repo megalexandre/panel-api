@@ -2,6 +2,7 @@
 
 class Receivable < ApplicationRecord
   belongs_to :user
+  belongs_to :bordero, optional: true
 
   enum :status, { awaiting: 0, in_analysis: 1, in_transaction: 2, paid: 3, overdue: 4 }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Bordero
-  class CalculateForm
+  class SaveForm
     include ActiveModel::Model
 
     PERMITTED_PARAMS = [:change_date, :monthly_rate_percent, { receivables: [:amount_cents, :due_date, :awaiting_days] }].freeze
@@ -50,7 +50,6 @@ class Bordero
           if due_date <= parsed_change_date
             errors.add("receivables[#{index}].due_date", "must be after change_date")
           end
-          
         rescue ArgumentError
           errors.add("receivables[#{index}].due_date", "is not a valid date")
         end

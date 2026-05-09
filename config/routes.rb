@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       end
     end
     post "bordero/calculate", to: "bordero#calculate"
+    post "bordero",           to: "bordero#save"
     resources :holidays, only: [:index, :create, :update, :destroy]
 
   end
