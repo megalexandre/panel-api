@@ -15,9 +15,11 @@ module Bordero
 
     def call
       {
-        total_amount_cents: total_amount_cents,
-        average_days:       average_days,
-        items:              items
+        total_amount_cents:        total_amount_cents,
+        total_proceeds_cents:      total_proceeds_cents,
+        total_interest_amount_cents: total_interest_amount_cents,
+        average_days:              average_days,
+        items:                     items
       }
     end
 
@@ -33,14 +35,16 @@ module Bordero
       due_date      = Date.parse(item[:due_date].to_s)
       awaiting_days = item[:awaiting_days].to_i
 
-      adjusted   = BusinessDayAdjuster.next_business_day(due_date)
-      total_days = (adjusted - @change_date).to_i - awaiting_days
-      rate       = (1 + @monthly_rate / 100.0) ** (total_days.to_f / 30.0) - 1
-      interest   = (amount_cents * rate).round
+      deposit_date     = BusinessDayAdjuster.next_business_day(due_date)
+      payment_due_date = BusinessDayAdjuster.add_business_days(deposit_date, awaiting_days)
+      total_days       = (payment_due_date - @change_date).to_i
+      rate             = (1 + @monthly_rate / 100.0) ** (total_days.to_f / 30.0) - 1
+      interest         = (amount_cents * rate).round
 
       {
         amount_cents:          amount_cents,
-        due_date:              item[:due_date],
+        deposit_date:          deposit_date.iso8601,
+        settlement_date:       payment_due_date.iso8601,
         total_days:            total_days,
         interest_rate_percent: (rate * 100).round(4),
         interest_amount_cents: interest,
@@ -50,6 +54,14 @@ module Bordero
 
     def total_amount_cents
       @total_amount_cents ||= items.sum { |i| i[:amount_cents] }
+    end
+
+    def total_proceeds_cents
+      items.sum { |i| i[:proceeds_cents] }
+    end
+
+    def total_interest_amount_cents
+      items.sum { |i| i[:interest_amount_cents] }
     end
 
     def average_days

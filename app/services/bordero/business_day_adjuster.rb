@@ -6,5 +6,13 @@ module Bordero
       date += 1 while date.saturday? || date.sunday? || Calendar::HolidayResolver.holiday?(date)
       date
     end
+
+    def self.add_business_days(date, days)
+      days.times do
+        date += 1
+        date += 1 while date.saturday? || date.sunday? || Calendar::HolidayResolver.holiday?(date)
+      end
+      date
+    end
   end
 end
