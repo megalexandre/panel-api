@@ -21,7 +21,7 @@ gem "rake", "13.2.1"
 gem "bcrypt", "~> 3.1.7"
 
 # JWT for authentication tokens
-gem "jwt", "~> 2.8"
+gem "jwt", "~> 3.2"
 
 # Prometheus metrics exporter
 gem "prometheus-client", "~> 4.2"
