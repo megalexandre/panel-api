@@ -3,12 +3,11 @@
 class Api::ReceivablesController < Api::BaseController
   include Authenticable
 
-  before_action :load_receivable, only: [ :show, :update, :destroy ]
+  before_action :load_receivable, only: [ :show, :update, :destroy, :change_status ]
 
   def index
     form = Receivables::ListForm.from_params(params, user_id: current_user_id)
     result = Receivables::ListService.call(**form.to_service_params)
-    receivables = Receivable.where(user_id: current_user_id)
 
     render json: {
       receivables: result[:receivables].map { |receivable| ReceivableSerializer.new(receivable) },
@@ -34,6 +33,11 @@ class Api::ReceivablesController < Api::BaseController
   def destroy
     Receivables::DestroyService.call(receivable: @receivable)
     head :no_content
+  end
+
+  def change_status
+    result = Receivables::ChangeStatusService.call(receivable: @receivable, status: params[:status])
+    render_result(result, @receivable, ReceivableSerializer)
   end
 
   private

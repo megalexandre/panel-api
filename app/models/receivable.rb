@@ -4,7 +4,7 @@ class Receivable < ApplicationRecord
   belongs_to :user
   belongs_to :bordero, optional: true
 
-  enum :status, { awaiting: 0, in_analysis: 1, in_transaction: 2, paid: 3, overdue: 4 }
+  enum :status, { awaiting: 0, to_deposit: 1, deposited: 2, returned: 3, overdue: 4, paid: 5 }
 
   default_scope { where(deleted_at: nil).where.not(status: :paid) }
 
@@ -13,7 +13,6 @@ class Receivable < ApplicationRecord
 
   validates :amount_cents, presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-                                                                 
   validates :due_date, presence: true
   validates :change_date, presence: true
   validates :status, presence: true
@@ -27,5 +26,4 @@ class Receivable < ApplicationRecord
   def soft_delete!
     update!(deleted_at: Time.current)
   end
-
 end
