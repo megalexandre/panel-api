@@ -31,7 +31,7 @@ class Api::ReceivablesController < Api::BaseController
   end
 
   def destroy
-    Receivables::DestroyService.call(receivable: @receivable)
+    @receivable.soft_delete!
     head :no_content
   end
 
