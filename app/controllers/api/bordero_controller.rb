@@ -33,6 +33,11 @@ class Api::BorderoController < Api::BaseController
     render json: BorderoSerializer.new(result), status: :ok
   end
 
+  def update
+    bordero = Bordero::UpdateService.call(id: params[:id], params: update_params, user_id: current_user_id)
+    render json: BorderoSavedSerializer.new(bordero), status: :ok
+  end
+
   def save
     bordero = Bordero::SaveService.call(params: save_params, user_id: current_user_id)
     render json: BorderoSavedSerializer.new(bordero), status: :created
@@ -51,5 +56,9 @@ class Api::BorderoController < Api::BaseController
 
   def save_params
     params.permit(*Bordero::SaveForm::PERMITTED_PARAMS).to_h
+  end
+
+  def update_params
+    params.permit(*Bordero::SaveForm::PERMITTED_PARAMS, receivable_ids: []).to_h
   end
 end

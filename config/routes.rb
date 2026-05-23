@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     post "bordero",           to: "bordero#save"
     get  "bordero",           to: "bordero#index"
     get  "bordero/:id",       to: "bordero#show"
+    put  "bordero/:id",       to: "bordero#update"
     resources :holidays, only: [ :index, :create, :update, :destroy ]
     namespace :dashboard do
       get :receivables_by_status
