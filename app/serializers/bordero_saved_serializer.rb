@@ -8,7 +8,7 @@ class BorderoSavedSerializer
     {
       id:                          @bordero.id,
       change_date:                 @bordero.change_date,
-      monthly_rate_percent:        @bordero.monthly_rate_percent,
+      monthly_rate_percent:        @bordero.monthly_rate_percent.to_f,
       total_amount_cents:          @bordero.total_amount_cents,
       total_proceeds_cents:        @bordero.total_proceeds_cents,
       total_interest_amount_cents: @bordero.total_interest_amount_cents,

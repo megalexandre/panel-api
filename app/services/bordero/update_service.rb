@@ -15,7 +15,7 @@ class Bordero
       bordero = Bordero.find_by(id: @id, user_id: @user_id)
       raise Api::ResourceNotFoundError unless bordero
 
-      form = Bordero::SaveForm.new(@params)
+      form = Bordero::SaveForm.new(@params.slice(:change_date, :monthly_rate_percent, :receivables))
       raise Api::ValidationError.new(form.errors.messages) unless form.valid?
 
       result = Bordero::CalculateService.call(params: @params)
