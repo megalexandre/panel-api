@@ -5,6 +5,13 @@ class Api::BorderoController < Api::BaseController
 
   before_action :validate_form, only: :calculate
 
+  def show
+    bordero = Bordero.find_by(id: params[:id], user_id: current_user_id)
+    raise Api::ResourceNotFoundError unless bordero
+
+    render json: BorderoSavedSerializer.new(bordero), status: :ok
+  end
+
   def index
     result = Bordero::ListService.call(
       user_id:        current_user_id,
