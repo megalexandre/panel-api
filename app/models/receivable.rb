@@ -4,9 +4,10 @@ class Receivable < ApplicationRecord
   belongs_to :user
   belongs_to :bordero, optional: true
 
-  enum :status, { awaiting: 0, to_deposit: 1, deposited: 2, returned: 3, overdue: 4, paid: 5 }
+  enum :status, draft: "draft", awaiting: "awaiting", to_deposit: "to_deposit",
+                deposited: "deposited", returned: "returned", overdue: "overdue", paid: "paid"
 
-  default_scope { where(deleted_at: nil).where.not(status: :paid) }
+  default_scope { where(deleted_at: nil).where.not(status: [ :paid, :draft ]) }
 
   scope :discarded, -> { unscoped.where.not(deleted_at: nil) }
   scope :with_discarded, -> { unscoped }
