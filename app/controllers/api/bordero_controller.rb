@@ -1,8 +1,25 @@
 # frozen_string_literal: true
+
 class Api::BorderoController < Api::BaseController
   include Authenticable
 
   before_action :validate_form, only: :calculate
+
+  def index
+    result = Bordero::ListService.call(
+      user_id:        current_user_id,
+      page:           params[:page],
+      per_page:       params[:per_page],
+      sort_by:        params[:sort_by],
+      sort_direction: params[:sort_direction]
+    )
+
+    render json: {
+      items:      result[:borderos].map { |b| BorderoSavedSerializer.new(b) },
+      pagination: result[:pagination],
+      summary:    BorderoSumarizeSerializer.new(result[:borderos])
+    }, status: :ok
+  end
 
   def calculate
     result = Bordero::CalculateService.call(params: calculate_params)

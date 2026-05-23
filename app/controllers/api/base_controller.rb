@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 module Api
   class ResourceNotFoundError < StandardError; end
-  
+
   class ValidationError < StandardError
     attr_reader :errors
     def initialize(errors)
@@ -14,12 +15,12 @@ module Api
     skip_before_action :verify_authenticity_token, raise: false
 
     rescue_from ResourceNotFoundError, with: :render_resource_not_found
-    
+
     rescue_from ValidationError do |e|
       Rails.logger.error "API Validation Error: #{e.errors.inspect}"
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
-    
+
     protected
 
     def render_resource_not_found
