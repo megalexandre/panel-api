@@ -4,7 +4,7 @@ module Receivables
   class ListForm
     include ActiveModel::Model
 
-    PERMITTED_ATTRIBUTES = %i[with_discarded page per_page sort_by sort_direction].freeze
+    PERMITTED_ATTRIBUTES = %i[with_discarded page per_page sort_by sort_direction bordero_id].freeze
     attr_accessor(*PERMITTED_ATTRIBUTES, :user_id)
 
     def self.from_params(params, user_id:)
@@ -20,7 +20,8 @@ module Receivables
         page: page,
         per_page: per_page,
         sort_by: sort_by,
-        sort_direction: sort_direction
+        sort_direction: sort_direction,
+        bordero_id: bordero_id
       }
     end
   end

@@ -15,8 +15,12 @@ module Receivables
     }.freeze
     SORT_DIRECTIONS = %w[asc desc].freeze
 
-    def self.call(user_id:, with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION)
-      relation = with_discarded ? Receivable.with_discarded : Receivable
+    def self.call(user_id:, with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION, bordero_id: nil)
+      if bordero_id.present?
+        relation = Receivable.with_discarded.where(deleted_at: nil, bordero_id: bordero_id)
+      else
+        relation = with_discarded ? Receivable.with_discarded : Receivable
+      end
       relation = relation.where(user_id: user_id)
       page_number = normalize_page(page)
       per_page_number = normalize_per_page(per_page)
