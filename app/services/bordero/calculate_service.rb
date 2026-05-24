@@ -37,7 +37,7 @@ class Bordero
 
       deposit_date     = BusinessDayAdjuster.next_business_day(due_date)
       payment_due_date = BusinessDayAdjuster.add_business_days(deposit_date, awaiting_days)
-      total_days       = (payment_due_date - @change_date).to_i
+      total_days       = (due_date - @change_date).to_i + (payment_due_date - deposit_date).to_i
       rate_percent = @monthly_rate * total_days / 30.0
       interest     = (amount_cents * rate_percent / 100.0).round
 
