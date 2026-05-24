@@ -59,6 +59,6 @@ class Api::BorderoController < Api::BaseController
   end
 
   def update_params
-    params.permit(*Bordero::SaveForm::PERMITTED_PARAMS, receivable_ids: []).to_h
+    params.permit(*Bordero::SaveForm::PERMITTED_PARAMS).to_h
   end
 end

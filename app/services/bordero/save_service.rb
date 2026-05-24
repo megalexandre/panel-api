@@ -14,6 +14,27 @@ class Bordero
       form = Bordero::SaveForm.new(@params)
       raise Api::ValidationError.new(form.errors.messages) unless form.valid?
 
+      if @params[:receivable_ids].present?
+        save_with_receivable_ids
+      else
+        save_with_receivables_array
+      end
+    end
+
+    private
+
+    def save_with_receivable_ids
+      receivables = Receivable.unscoped.where(id: @params[:receivable_ids], user_id: @user_id, deleted_at: nil)
+      result = Bordero::CalculateService.call(params: calculate_params_from_records(receivables))
+
+      ActiveRecord::Base.transaction do
+        bordero = create_bordero(result)
+        receivables.update_all(bordero_id: bordero.id, status: "awaiting", change_date: @params[:change_date])
+        bordero
+      end
+    end
+
+    def save_with_receivables_array
       result = Bordero::CalculateService.call(params: @params)
 
       ActiveRecord::Base.transaction do
@@ -24,7 +45,13 @@ class Bordero
       end
     end
 
-    private
+    def calculate_params_from_records(receivables)
+      @params.merge(
+        receivables: receivables.map { |r|
+          { amount_cents: r.amount_cents, due_date: r.due_date.iso8601, awaiting_days: r.awaiting_days }
+        }
+      )
+    end
 
     def create_receivables
       @params[:receivables].map do |item|

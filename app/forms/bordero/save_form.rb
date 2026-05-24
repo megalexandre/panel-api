@@ -3,13 +3,18 @@ class Bordero
   class SaveForm
     include ActiveModel::Model
 
-    PERMITTED_PARAMS = [:change_date, :monthly_rate_percent, { receivables: [:amount_cents, :due_date, :awaiting_days] }].freeze
+    PERMITTED_PARAMS = [
+      :change_date,
+      :monthly_rate_percent,
+      { receivables: [:amount_cents, :due_date, :awaiting_days] },
+      { receivable_ids: [] }
+    ].freeze
 
-    attr_accessor :change_date, :monthly_rate_percent, :receivables
+    attr_accessor :change_date, :monthly_rate_percent, :receivables, :receivable_ids
 
     validates :change_date, presence: true
     validates :monthly_rate_percent, presence: true, numericality: { greater_than: 0 }
-    validates :receivables, presence: true
+    validates :receivables, presence: true, unless: -> { receivable_ids.present? }
     validate :change_date_must_be_valid_date
     validate :receivables_must_be_valid_array
 

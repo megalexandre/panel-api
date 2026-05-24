@@ -7,7 +7,8 @@
       "request": "launch",
       "script": "bin/cucumber ${file}",
       "useBundler": true,
-      "askParameters": false
+      "askParameters": false,
+      "rdbgPath": "${workspaceFolder}/vendor/bundle/ruby/3.2.0/bin/rdbg"
     },
     {
       "type": "rdbg",
@@ -15,7 +16,8 @@
       "request": "launch",
       "script": "bin/cucumber features/",
       "useBundler": true,
-      "askParameters": false
+      "askParameters": false,
+      "rdbgPath": "${workspaceFolder}/vendor/bundle/ruby/3.2.0/bin/rdbg"
     },
     {
       "type": "rdbg",
@@ -23,7 +25,8 @@
       "request": "launch",
       "script": "bin/rails server",
       "useBundler": true,
-      "askParameters": false
+      "askParameters": false,
+      "rdbgPath": "${workspaceFolder}/vendor/bundle/ruby/3.2.0/bin/rdbg"
     }
   ]
 }
