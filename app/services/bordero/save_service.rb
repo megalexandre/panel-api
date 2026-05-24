@@ -61,7 +61,7 @@ class Bordero
           due_date:     item[:due_date],
           change_date:  @params[:change_date],
           user_id:      @user_id,
-          status:       :awaiting
+          status:       item[:status].presence || :awaiting
         )
       end
     end

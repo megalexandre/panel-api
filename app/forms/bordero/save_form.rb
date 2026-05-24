@@ -6,7 +6,7 @@ class Bordero
     PERMITTED_PARAMS = [
       :change_date,
       :monthly_rate_percent,
-      { receivables: [:amount_cents, :due_date, :awaiting_days] },
+      { receivables: [:amount_cents, :due_date, :awaiting_days, :status] },
       { receivable_ids: [] }
     ].freeze
 
