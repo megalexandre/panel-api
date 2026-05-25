@@ -10,8 +10,9 @@ Feature: Salvar Borderô - Validações
       """
       {
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-08-27", "awaiting_days": 2}
+          {"amount_cents": 100000, "due_date": "2026-08-27"}
         ]
       }
       """
@@ -31,8 +32,9 @@ Feature: Salvar Borderô - Validações
       """
       {
         "change_date": "2026-08-01",
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-08-27", "awaiting_days": 2}
+          {"amount_cents": 100000, "due_date": "2026-08-27"}
         ]
       }
       """
@@ -52,7 +54,8 @@ Feature: Salvar Borderô - Validações
       """
       {
         "change_date": "2026-08-01",
-        "monthly_rate_percent": 2.5
+        "monthly_rate_percent": 2.5,
+        "awaiting_days": 2
       }
       """
     Then the response status should be 422
@@ -72,6 +75,7 @@ Feature: Salvar Borderô - Validações
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": []
       }
       """
@@ -92,8 +96,9 @@ Feature: Salvar Borderô - Validações
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 0, "due_date": "2026-08-27", "awaiting_days": 2}
+          {"amount_cents": 0, "due_date": "2026-08-27"}
         ]
       }
       """
@@ -114,8 +119,9 @@ Feature: Salvar Borderô - Validações
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-07-31", "awaiting_days": 2}
+          {"amount_cents": 100000, "due_date": "2026-07-31"}
         ]
       }
       """
@@ -136,8 +142,9 @@ Feature: Salvar Borderô - Validações
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": -1,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-08-27", "awaiting_days": -1}
+          {"amount_cents": 100000, "due_date": "2026-08-27"}
         ]
       }
       """
@@ -146,7 +153,7 @@ Feature: Salvar Borderô - Validações
       """
       {
         "errors": {
-          "receivables[0].awaiting_days": ["must be >= 0"]
+          "awaiting_days": ["must be greater than or equal to 0"]
         }
       }
       """

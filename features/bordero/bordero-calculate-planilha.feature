@@ -11,13 +11,14 @@ Feature: Borderô — Calcular com dados da planilha (6 cheques)
       {
         "change_date": "2026-05-20",
         "monthly_rate_percent": 4.0,
+        "awaiting_days": 2,
         "receivables": [
-          { "amount_cents": 386666, "due_date": "2026-06-19", "awaiting_days": 2 },
-          { "amount_cents": 240000, "due_date": "2026-06-19", "awaiting_days": 2 },
-          { "amount_cents": 313333, "due_date": "2026-07-19", "awaiting_days": 2 },
-          { "amount_cents": 313333, "due_date": "2026-07-19", "awaiting_days": 2 },
-          { "amount_cents": 313333, "due_date": "2026-08-19", "awaiting_days": 2 },
-          { "amount_cents": 313333, "due_date": "2026-08-19", "awaiting_days": 2 }
+          { "amount_cents": 386666, "due_date": "2026-06-19" },
+          { "amount_cents": 240000, "due_date": "2026-06-19" },
+          { "amount_cents": 313333, "due_date": "2026-07-19" },
+          { "amount_cents": 313333, "due_date": "2026-07-19" },
+          { "amount_cents": 313333, "due_date": "2026-08-19" },
+          { "amount_cents": 313333, "due_date": "2026-08-19" }
         ]
       }
       """

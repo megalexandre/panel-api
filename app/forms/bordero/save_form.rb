@@ -6,14 +6,16 @@ class Bordero
     PERMITTED_PARAMS = [
       :change_date,
       :monthly_rate_percent,
-      { receivables: [:amount_cents, :due_date, :awaiting_days, :status] },
+      :awaiting_days,
+      { receivables: [:amount_cents, :due_date, :status] },
       { receivable_ids: [] }
     ].freeze
 
-    attr_accessor :change_date, :monthly_rate_percent, :receivables, :receivable_ids
+    attr_accessor :change_date, :monthly_rate_percent, :awaiting_days, :receivables, :receivable_ids
 
     validates :change_date, presence: true
     validates :monthly_rate_percent, presence: true, numericality: { greater_than: 0 }
+    validates :awaiting_days, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :receivables, presence: true, unless: -> { receivable_ids.present? }
     validate :change_date_must_be_valid_date
     validate :receivables_must_be_valid_array
@@ -43,11 +45,6 @@ class Bordero
 
         if item[:amount_cents].blank? || item[:amount_cents].to_i <= 0
           errors.add("receivables[#{index}].amount_cents", "must be a positive integer")
-        end
-
-        awaiting = item[:awaiting_days]
-        if awaiting.nil? || awaiting.to_i < 0
-          errors.add("receivables[#{index}].awaiting_days", "must be >= 0")
         end
 
         begin

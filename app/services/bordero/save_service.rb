@@ -71,6 +71,7 @@ class Bordero
         user_id:                     @user_id,
         change_date:                 @params[:change_date],
         monthly_rate_percent:        @params[:monthly_rate_percent],
+        awaiting_days:               @params[:awaiting_days].to_i,
         total_amount_cents:          result[:total_amount_cents],
         total_proceeds_cents:        result[:total_proceeds_cents],
         total_interest_amount_cents: result[:total_interest_amount_cents],

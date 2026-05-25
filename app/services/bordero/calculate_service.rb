@@ -7,10 +7,11 @@ class Bordero
     end
 
     def initialize(params)
-      params        = params.with_indifferent_access
-      @change_date  = Date.parse(params[:change_date].to_s)
-      @monthly_rate = params[:monthly_rate_percent].to_f
-      @receivables  = params[:receivables]
+      params          = params.with_indifferent_access
+      @change_date    = Date.parse(params[:change_date].to_s)
+      @monthly_rate   = params[:monthly_rate_percent].to_f
+      @awaiting_days  = params[:awaiting_days].to_i
+      @receivables    = params[:receivables]
     end
 
     def call
@@ -30,13 +31,12 @@ class Bordero
     end
 
     def calculate_item(raw)
-      item          = raw.to_h.with_indifferent_access
-      amount_cents  = item[:amount_cents].to_i
-      due_date      = Date.parse(item[:due_date].to_s)
-      awaiting_days = item[:awaiting_days].to_i
+      item         = raw.to_h.with_indifferent_access
+      amount_cents = item[:amount_cents].to_i
+      due_date     = Date.parse(item[:due_date].to_s)
 
       deposit_date     = BusinessDayAdjuster.next_business_day(due_date)
-      payment_due_date = BusinessDayAdjuster.add_business_days(deposit_date, awaiting_days)
+      payment_due_date = BusinessDayAdjuster.add_business_days(deposit_date, @awaiting_days)
       total_days       = (due_date - @change_date).to_i + (payment_due_date - deposit_date).to_i
       rate_percent = @monthly_rate * total_days / 30.0
       interest     = (amount_cents * rate_percent / 100.0).round

@@ -11,10 +11,11 @@ Feature: Salvar Borderô
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-08-27", "awaiting_days": 2},
-          {"amount_cents": 100000, "due_date": "2026-09-02", "awaiting_days": 2},
-          {"amount_cents": 100000, "due_date": "2026-09-03", "awaiting_days": 2}
+          {"amount_cents": 100000, "due_date": "2026-08-27"},
+          {"amount_cents": 100000, "due_date": "2026-09-02"},
+          {"amount_cents": 100000, "due_date": "2026-09-03"}
         ]
       }
       """
@@ -37,8 +38,9 @@ Feature: Salvar Borderô
       {
         "change_date": "2026-08-01",
         "monthly_rate_percent": 2.5,
+        "awaiting_days": 2,
         "receivables": [
-          {"amount_cents": 100000, "due_date": "2026-08-27", "awaiting_days": 2}
+          {"amount_cents": 100000, "due_date": "2026-08-27"}
         ]
       }
       """
