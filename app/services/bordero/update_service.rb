@@ -23,7 +23,7 @@ class Bordero
 
       ActiveRecord::Base.transaction do
         Receivable.where(bordero_id: bordero.id).update_all(bordero_id: nil)
-        existing.update_all(bordero_id: bordero.id, status: "awaiting", change_date: @params[:change_date]) if existing.present?
+        existing.update_all(bordero_id: bordero.id, status: "draft", change_date: @params[:change_date]) if existing.present?
         create_and_link_inline_receivables(bordero)
         update_bordero(bordero, result)
       end
@@ -56,7 +56,7 @@ class Bordero
           change_date:  @params[:change_date],
           bordero_id:   bordero.id,
           user_id:      @user_id,
-          status:       :awaiting
+          status:       :draft
         )
       end
     end

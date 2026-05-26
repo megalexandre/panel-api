@@ -21,9 +21,9 @@ Feature: Receivables GET
         "change_date": "2026-01-01",
         "awaiting_days": 31,
         "status": "awaiting",
-        "created_at": "2026-01-01 00:00:00",
+        "created_at": "2026-01-01 03:00:00",
         "deleted_at": null,
-        "updated_at": "2026-01-01 00:00:00"
+        "updated_at": "2026-01-01 03:00:00"
       }
       """
 

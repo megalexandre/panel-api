@@ -25,8 +25,8 @@ Feature: Receivables management
         "change_date": "2026-03-01",
         "awaiting_days": 59,
         "status": "awaiting",
-        "created_at": "2026-01-01 00:00:00",
-        "updated_at": "2026-01-01 00:00:00"
+        "created_at": "2026-01-01 03:00:00",
+        "updated_at": "2026-01-01 03:00:00"
       }
       """
 
@@ -52,8 +52,8 @@ Feature: Receivables management
         "change_date": "2026-03-01",
         "awaiting_days": 59,
         "status": "awaiting",
-        "created_at": "2026-01-01 00:00:00",
-        "updated_at": "2026-01-01 00:00:00"
+        "created_at": "2026-01-01 03:00:00",
+        "updated_at": "2026-01-01 03:00:00"
       }
       """
 

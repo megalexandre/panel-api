@@ -10,7 +10,7 @@ class ReceivableSerializer
       amount_cents: @receivable.amount_cents,
       due_date: @receivable.due_date,
       change_date: @receivable.change_date,
-      awaiting_days: @receivable.awaiting_days,
+      awaiting_days: (@receivable.due_date.to_date - Date.current).to_i,
       status: @receivable.status,
       notes: @receivable.notes,
       created_at: @receivable.created_at,

@@ -16,11 +16,11 @@ Rails.application.routes.draw do
         get :me
       end
     end
-    post "bordero/calculate", to: "bordero#calculate"
     post "bordero",           to: "bordero#save"
     get  "bordero",           to: "bordero#index"
     get  "bordero/:id",       to: "bordero#show"
     put  "bordero/:id",       to: "bordero#update"
+    get "calendar", to: "calendar#index"
     resources :holidays, only: [ :index, :create, :update, :destroy ]
     namespace :dashboard do
       get :receivables_by_status

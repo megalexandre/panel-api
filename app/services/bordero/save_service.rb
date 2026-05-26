@@ -29,7 +29,7 @@ class Bordero
 
       ActiveRecord::Base.transaction do
         bordero = create_bordero(result)
-        receivables.update_all(bordero_id: bordero.id, status: "awaiting", change_date: @params[:change_date])
+        receivables.update_all(bordero_id: bordero.id, status: "draft", change_date: @params[:change_date])
         bordero
       end
     end
@@ -48,7 +48,7 @@ class Bordero
     def calculate_params_from_records(receivables)
       @params.merge(
         receivables: receivables.map { |r|
-          { amount_cents: r.amount_cents, due_date: r.due_date.iso8601, awaiting_days: r.awaiting_days }
+          { amount_cents: r.amount_cents, due_date: r.due_date.iso8601 }
         }
       )
     end
@@ -61,7 +61,7 @@ class Bordero
           due_date:     item[:due_date],
           change_date:  @params[:change_date],
           user_id:      @user_id,
-          status:       item[:status].presence || :awaiting
+          status:       item[:status].presence || :draft
         )
       end
     end

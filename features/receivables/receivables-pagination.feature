@@ -23,7 +23,7 @@ Feature: Receivables pagination and sorting
     Given the following receivables exist:
       | amount_cents | due_date   | status   |
       | 1000         | 2026-05-01 | awaiting |
-      | 2000         | 2026-06-01 | paid     |
+      | 2000         | 2026-06-01 | to_deposit |
       | 3000         | 2026-07-01 | overdue  |
     When I send a GET to "/receivables"
     Then the response status should be 200

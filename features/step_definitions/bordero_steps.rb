@@ -30,59 +30,6 @@ Given("the following borderos exist for the other user:") do |table|
   end
 end
 
-Given("the bordero parameters:") do |table|
-  params = table.rows_hash
-  @bordero_params = {
-    change_date:          params["change_date"],
-    monthly_rate_percent: params["monthly_rate_percent"].to_f,
-    awaiting_days:        params["awaiting_days"].to_i
-  }
-end
-
-Given("the receivables are:") do |table|
-  @bordero_receivables = table.hashes.map do |row|
-    { amount_cents: row["amount_cents"].to_i, due_date: row["due_date"] }
-  end
-end
-
-When("I calculate the bordero") do
-  body = @bordero_params.merge(receivables: @bordero_receivables).to_json
-  post "/bordero/calculate", body, @headers
-end
-
-Then("the bordero totals should be:") do |table|
-  coerce = ->(v) { Integer(v) rescue (Float(v) rescue v) }
-  actual = json_response
-
-  table.rows_hash.each do |key, expected_value|
-    actual_value = actual[key]
-    coerced      = coerce.call(expected_value)
-    expect(actual_value).to eq(coerced), <<~MSG
-      FAILED KEY: "#{key}"
-      EXPECTED: #{coerced.inspect}
-      GOT:      #{actual_value.inspect}
-    MSG
-  end
-end
-
-Then("the bordero items should be:") do |table|
-  coerce       = ->(v) { Integer(v) rescue (Float(v) rescue v) }
-  actual_items = json_response["items"]
-
-  table.hashes.each_with_index do |expected, index|
-    actual = actual_items[index]
-    expected.each do |key, expected_value|
-      actual_value = actual[key]
-      coerced      = coerce.call(expected_value)
-      expect(actual_value).to eq(coerced), <<~MSG
-        FAILED ITEM [#{index}] KEY: "#{key}"
-        EXPECTED: #{coerced.inspect}
-        GOT:      #{actual_value.inspect}
-      MSG
-    end
-  end
-end
-
 Then("the response should contain {int} bordero(s)") do |count|
   expect(json_response["items"].size).to eq(count)
 end
