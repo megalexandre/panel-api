@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :holidays, only: [ :index, :create, :update, :destroy ]
     namespace :dashboard do
       get :receivables_by_status
+      get :summary
     end
   end
   get "up" => "rails/health#show", as: :rails_health_check

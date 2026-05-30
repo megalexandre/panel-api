@@ -38,6 +38,10 @@ module Receivables
           per_page: per_page_number,
           total_pages: total_pages,
           total_count: total_count
+        },
+        summary: {
+          count: total_count,
+          total_amount_cents: relation.sum(:amount_cents)
         }
       }
     end

@@ -89,6 +89,24 @@ class Api::ReceivablesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, body.dig("pagination", "total_count")
   end
 
+  test "summary reflects the full set, not just the current page" do
+    user = create_user(email: "receivables-summary@example.com")
+    3.times do |i|
+      Receivable.create!(amount_cents: 1000, due_date: Date.new(2026, 5, i + 1), change_date: Date.new(2026, 4, 1), status: "awaiting", user: user)
+    end
+
+    get receivables_url,
+        params: { per_page: 2 },
+        headers: auth_headers_for(user)
+
+    assert_response :ok
+    body = response.parsed_body
+
+    assert_equal 2, body["receivables"].size
+    assert_equal 3, body.dig("summary", "count")
+    assert_equal 3000, body.dig("summary", "total_amount_cents")
+  end
+
   test "should not list another user receivables" do
     user_a = create_user(email: "receivables-user-a@example.com")
     user_b = create_user(email: "receivables-user-b@example.com")

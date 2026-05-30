@@ -7,7 +7,10 @@ class Receivable < ApplicationRecord
   enum :status, draft: "draft", awaiting: "awaiting", to_deposit: "to_deposit",
                 deposited: "deposited", returned: "returned", overdue: "overdue", paid: "paid"
 
-  default_scope { where(deleted_at: nil).where.not(status: [ :paid, :draft ]) }
+  default_scope {
+    where(deleted_at: nil).
+    where.not(status: [ :paid, :draft ])
+  }
 
   scope :discarded, -> { unscoped.where.not(deleted_at: nil) }
   scope :with_discarded, -> { unscoped }

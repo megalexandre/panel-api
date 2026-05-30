@@ -13,4 +13,10 @@ class Api::DashboardController < Api::BaseController
 
     render json: { data: counts.map { |status, count| { status: status, count: count } } }, status: :ok
   end
+
+  def summary
+    receivables = Receivable.where(user: current_user)
+
+    render json: DashboardSummarySerializer.new(receivables), status: :ok
+  end
 end

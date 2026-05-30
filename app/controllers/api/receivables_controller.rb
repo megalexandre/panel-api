@@ -12,7 +12,7 @@ class Api::ReceivablesController < Api::BaseController
     render json: {
       receivables: result[:receivables].map { |receivable| ReceivableSerializer.new(receivable) },
       pagination: result[:pagination],
-      summary: ReceivableSumarizeSerializer.new(result[:receivables])
+      summary: result[:summary]
     }, status: :ok
   end
 
