@@ -15,13 +15,15 @@ module Receivables
     }.freeze
     SORT_DIRECTIONS = %w[asc desc].freeze
 
+    def self.all(user_id:, with_discarded: false, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION, bordero_id: nil)
+      relation = build_relation(user_id: user_id, with_discarded: with_discarded, bordero_id: bordero_id)
+      column = normalize_sort_by(sort_by)
+      direction = normalize_sort_direction(sort_direction)
+      relation.order(column => direction)
+    end
+
     def self.call(user_id:, with_discarded: false, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE, sort_by: DEFAULT_SORT_BY, sort_direction: DEFAULT_SORT_DIRECTION, bordero_id: nil)
-      if bordero_id.present?
-        relation = Receivable.with_discarded.where(deleted_at: nil, bordero_id: bordero_id)
-      else
-        relation = with_discarded ? Receivable.with_discarded : Receivable
-      end
-      relation = relation.where(user_id: user_id)
+      relation = build_relation(user_id: user_id, with_discarded: with_discarded, bordero_id: bordero_id)
       page_number = normalize_page(page)
       per_page_number = normalize_per_page(per_page)
       column = normalize_sort_by(sort_by)
@@ -63,6 +65,15 @@ module Receivables
 
     def self.normalize_sort_direction(sort_direction)
       SORT_DIRECTIONS.include?(sort_direction.to_s) ? sort_direction.to_sym : DEFAULT_SORT_DIRECTION.to_sym
+    end
+
+    def self.build_relation(user_id:, with_discarded:, bordero_id:)
+      relation = if bordero_id.present?
+        Receivable.with_discarded.where(deleted_at: nil, bordero_id: bordero_id)
+      else
+        with_discarded ? Receivable.with_discarded : Receivable
+      end
+      relation.where(user_id: user_id)
     end
   end
 end

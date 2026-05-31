@@ -1,9 +1,52 @@
 # frozen_string_literal: true
+require "csv"
 
 class Api::ReceivablesController < Api::BaseController
   include Authenticable
 
   before_action :load_receivable, only: [ :show, :update, :destroy, :change_status ]
+
+  STATUS_LABELS = {
+    "draft"      => "Rascunho",
+    "awaiting"   => "Aguardando",
+    "to_deposit" => "A depositar",
+    "deposited"  => "Depositado",
+    "returned"   => "Retornado",
+    "overdue"    => "Vencido",
+    "paid"       => "Pago"
+  }.freeze
+
+  def export
+    form = Receivables::ListForm.from_params(params, user_id: current_user_id)
+    service_params = form.to_service_params.except(:page, :per_page)
+    receivables = Receivables::ListService.all(**service_params)
+
+    receivables_with_users = receivables.includes(:user)
+
+    bom = "\xEF\xBB\xBF"
+    csv = bom + "sep=;\n" + CSV.generate(col_sep: ";") do |csv|
+      csv << [ "Vencimento", "Valor (R$)", "Status", "Dias p/ vencer", "Data do status", "Observações", "Criado por", "Criado em", "Última alteração" ]
+      receivables_with_users.each do |r|
+        csv << [
+          r.due_date.strftime("%d/%m/%Y"),
+          format("%.2f", r.amount_cents / 100.0).tr(".", ","),
+          STATUS_LABELS[r.status] || r.status,
+          (r.due_date.to_date - Date.current).to_i,
+          r.change_date.strftime("%d/%m/%Y"),
+          r.notes.to_s,
+          r.user.email,
+          r.created_at.strftime("%d/%m/%Y"),
+          r.updated_at.strftime("%d/%m/%Y")
+        ]
+      end
+    end
+
+    filename = "recebiveis_#{Date.current.strftime('%Y-%m-%d')}.csv"
+    send_data csv.encode("UTF-8"),
+              filename: filename,
+              type: "text/csv; charset=utf-8",
+              disposition: "attachment"
+  end
 
   def index
     form = Receivables::ListForm.from_params(params, user_id: current_user_id)

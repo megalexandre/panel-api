@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     post "auth/login"
     post "auth/refresh"
     resources :receivables, only: [ :index, :show, :create, :update, :destroy ] do
+      collection do
+        get :export
+      end
       member do
         patch :change_status
       end
