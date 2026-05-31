@@ -10,6 +10,7 @@ class Api::ReceivableAuditsController < Api::BaseController
     per  = (params[:per_page] || PER_PAGE).to_i
 
     versions = PaperTrail::Version
+      .select("versions.*, receivables.amount_cents AS receivable_amount_cents, receivables.due_date AS receivable_due_date")
       .where(item_type: "Receivable")
       .joins("JOIN receivables ON receivables.id = versions.item_id")
       .where(receivables: { user_id: current_user_id })

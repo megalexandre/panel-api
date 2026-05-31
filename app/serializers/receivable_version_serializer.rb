@@ -15,7 +15,9 @@ class ReceivableVersionSerializer
       event: @version.event,
       changes: changes,
       whodunnit: @version.whodunnit,
-      created_at: @version.created_at
+      created_at: @version.created_at,
+      receivable_amount_cents: @version.try(:receivable_amount_cents),
+      receivable_due_date: @version.try(:receivable_due_date)
     }
   end
 end
