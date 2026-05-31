@@ -7,7 +7,7 @@ class ReceivableVersionSerializer
 
   def as_json(*)
     changes = @version.object_changes
-    changes = JSON.parse(changes) if changes.is_a?(String)
+    changes = YAML.safe_load(changes, permitted_classes: [ Date, Time, BigDecimal ]) if changes.is_a?(String)
 
     {
       id: @version.id,
