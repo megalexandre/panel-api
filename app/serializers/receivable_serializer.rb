@@ -7,6 +7,7 @@ class ReceivableSerializer
   def as_json(*)
     {
       id: @receivable.id,
+      sequence_number: @receivable.sequence_number,
       amount_cents: @receivable.amount_cents,
       due_date: @receivable.due_date,
       change_date: @receivable.change_date,

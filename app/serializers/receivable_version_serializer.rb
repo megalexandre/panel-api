@@ -17,7 +17,8 @@ class ReceivableVersionSerializer
       whodunnit: @version.whodunnit,
       created_at: @version.created_at,
       receivable_amount_cents: @version.try(:receivable_amount_cents),
-      receivable_due_date: @version.try(:receivable_due_date)
+      receivable_due_date: @version.try(:receivable_due_date),
+      receivable_sequence_number: @version.try(:receivable_sequence_number)
     }
   end
 end

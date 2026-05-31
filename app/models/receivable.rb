@@ -17,6 +17,8 @@ class Receivable < ApplicationRecord
   scope :discarded, -> { unscoped.where.not(deleted_at: nil) }
   scope :with_discarded, -> { unscoped }
 
+  before_create :assign_sequence_number
+
   validates :amount_cents, presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :due_date, presence: true
@@ -26,5 +28,12 @@ class Receivable < ApplicationRecord
 
   def soft_delete!
     update!(deleted_at: Time.current)
+  end
+
+  private
+
+  def assign_sequence_number
+    max = Receivable.unscoped.where(user_id: user_id).maximum(:sequence_number) || 0
+    self.sequence_number = max + 1
   end
 end

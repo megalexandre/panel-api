@@ -35,6 +35,7 @@ class BorderoSavedSerializer
   def as_json(*)
     {
       id:                          @bordero.id,
+      sequence_number:             @bordero.sequence_number,
       change_date:                 @bordero.change_date,
       monthly_rate_percent:        @bordero.monthly_rate_percent.to_f,
       awaiting_days:               @bordero.awaiting_days,
