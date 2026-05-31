@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :receivables, only: [ :index, :show, :create, :update, :destroy ] do
       collection do
         get :export
+        get :audit, to: "receivable_audits#index"
       end
       member do
         patch :change_status

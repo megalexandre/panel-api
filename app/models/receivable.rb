@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Receivable < ApplicationRecord
+  has_paper_trail only: %i[status amount_cents due_date notes change_date deleted_at]
+
   belongs_to :user
   belongs_to :bordero, optional: true
 

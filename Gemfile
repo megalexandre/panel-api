@@ -5,6 +5,8 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.3"
 
+gem "csv"
+
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
@@ -55,6 +57,9 @@ gem "activerecord-postgis-adapter"
 
 # Brazilian (and global) holiday calendar
 gem "holidays", "~> 8.0"
+
+# Audit trail / versioning
+gem "paper_trail", "~> 17.0"
 
   # Swagger/OpenAPI documentation
   gem "rswag-api"
