@@ -56,7 +56,7 @@ gem "image_processing", "~> 1.2"
 gem "activerecord-postgis-adapter"
 
 # Brazilian (and global) holiday calendar
-gem "holidays", "~> 8.0"
+gem "holidays", "~> 10.0"
 
 # Audit trail / versioning
 gem "paper_trail", "~> 17.0"
