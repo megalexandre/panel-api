@@ -39,9 +39,14 @@ module ApiDashboard
     end
 
     # Prometheus: collect HTTP metrics and expose /metrics and /api/metrics endpoints
-    config.middleware.use Prometheus::Middleware::Collector
+    config.middleware.use Prometheus::Middleware::Collector,
+      group_by: lambda { |env|
+        path = env["PATH_INFO"]
+        path
+          .gsub(%r{/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}, "/:id")
+          .gsub(%r{/\d+}, "/:id")
+      }
     config.middleware.use ::AppMetricsMiddleware
     config.middleware.use Prometheus::Middleware::Exporter, path: "/metrics"
-    config.middleware.use Prometheus::Middleware::Exporter, path: "/api/metrics"
   end
 end

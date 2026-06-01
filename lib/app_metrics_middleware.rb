@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 class AppMetricsMiddleware
   STATUS_PATH = "/proc/self/status".freeze
+  UPDATE_INTERVAL = 30 # seconds
 
   def initialize(app, registry: Prometheus::Client.registry)
     @app = app
+    @last_update = nil
     @memory_rss_bytes = register_gauge(
       registry,
       :app_process_resident_memory_bytes,
@@ -22,11 +24,15 @@ class AppMetricsMiddleware
   end
 
   def call(env)
-    update_metrics
+    update_metrics if metrics_stale?
     @app.call(env)
   end
 
   private
+
+  def metrics_stale?
+    @last_update.nil? || (Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_update) >= UPDATE_INTERVAL
+  end
 
   def register_gauge(registry, name, docstring)
     registry.gauge(name, docstring: docstring)
@@ -40,6 +46,8 @@ class AppMetricsMiddleware
     gc = GC.stat
     @ruby_heap_live_slots.set(gc[:heap_live_slots])
     @ruby_heap_free_slots.set(gc[:heap_free_slots])
+
+    @last_update = Process.clock_gettime(Process::CLOCK_MONOTONIC)
   end
 
   def read_rss_bytes
